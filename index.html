@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin Transfer Progress</title>
+    <style>
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .progress-bar {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #ddd;
+            border-radius: 25px;
+            overflow: hidden;
+        }
+        .progress {
+            width: 0%;
+            height: 30px;
+            background-color: #4CAF50;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+        .images {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .images img {
+            max-width: 40%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <p id="percentage"></p>
+        <div class="images">
+            <img id="initial-coins" src="path/to/initial_coins_image.jpg" alt="Initial Coins">
+            <img id="current-coins" src="path/to/current_coins_image.jpg" alt="Current Coins">
+        </div>
+    </div>
+
+    <script>
+        function updateProgress(transferred, total) {
+            const percentage = (transferred / total) * 100;
+            document.getElementById('progress').style.width = `${percentage}%`;
+            document.getElementById('percentage').textContent = `${percentage.toFixed(2)}%`;
+        }
+
+        function fetchProgress() {
+            fetch('/path/to/your/backend-script.php?client_id=12345')
+                .then(response => response.json())
+                .then(data => {
+                    updateProgress(data.transferred, data.total);
+                    document.getElementById('current-coins').src = `path/to/current_coins_image_${data.client_id}.jpg`; // Update current coins image dynamically
+                });
+        }
+
+        // Fetch progress every 5 seconds
+        setInterval(fetchProgress, 5000);
+
+        // Initial fetch
+        fetchProgress();
+    </script>
+</body>
+</html>
